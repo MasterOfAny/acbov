@@ -1,5 +1,4 @@
-/** vars */
-const memoriesData = [
+export const memoriesData = [
     {
         name: '0.1',
         stickers: [
@@ -56,7 +55,7 @@ const memoriesData = [
         contract: true
     },
     {
-        name: '2.2',
+        name: '1.2',
         stickers: [
             '2_2.svg',
         ],
@@ -184,59 +183,3 @@ const memoriesData = [
         contract: true
     },
 ]
-const xpEl = document.querySelector('.diary__xp');
-const memoriesEl = document.querySelector('.diary__memories');
-
-let gridRow = 2;
-let step = 5;
-for (let i = 1; i <= 175; i++) {
-    const xpPoint = document.createElement('div');
-    xpPoint.classList.add('diary__xp-point');
-    xpPoint.innerText = i;
-    if (i > step + 1 && i < 2 * step + 1) {
-        xpPoint.style.gridRow = `${gridRow}`;
-    } else if (i > 2 * step + 5 && i <= 2 * step + 6) {
-        step += 5;
-        gridRow += 2;
-    }
-    xpEl.append(xpPoint);
-}
-
-for (let memory of memoriesData) {
-    const memoryEl = document.createElement('div');
-    memoryEl.classList.add('diary__memory');
-    const memoryELContent = `
-            <h4>${memory.name[0] !== 'M' ? `MEMORY ${memory.name}` : `${memory.name} OPTIONAL MEMORY`}</h4>
-            <div class="diary__memory-xp">XP:<input name="m_${memory.name}_xp" type="number"/></div>
-            <div class="diary__memory-attempts">
-                Attempts:
-                <div>
-                    <div>
-                        <input type="checkbox" id="m_${memory.name}_1" name="1" />
-                        <label for="m_${memory.name}_1">1</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="m_${memory.name}_2" name="2" />
-                        <label for="m_${memory.name}_2">2</label>
-                    </div>
-                </div>
-            </div>
-            <div class="memory_contract">
-                <div>
-                    Contract <input name="c_${memory.name}" type="number"/> completed:
-                </div>
-                <div>
-                    <div>
-                        <input type="checkbox" id="m_${memory.name}_yes" name="yes" />
-                        <label for="m_${memory.name}_yes">yes</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="m_${memory.name}_no" name="no" />
-                        <label for="m_${memory.name}_no">no</label>
-                    </div>
-                </div>
-            </div>
-    `;
-    memoryEl.innerHTML = memoryELContent;
-    memoriesEl.append(memoryEl)
-}
