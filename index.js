@@ -210,32 +210,34 @@ for (let memory of memoriesData) {
             <div class="diary__memory-xp">XP:<input name="m_${memory.name}_xp" type="number"/></div>
             <div class="diary__memory-attempts">
                 Attempts:
-                <div>
-                    <div>
-                        <input type="checkbox" id="m_${memory.name}_1" name="1" />
+                    <div class="diary__memory-attempt">
                         <label for="m_${memory.name}_1">1</label>
+                        <input type="checkbox" id="m_${memory.name}_1" name="1" />
                     </div>
-                    <div>
-                        <input type="checkbox" id="m_${memory.name}_2" name="2" />
+                    <div class="diary__memory-attempt">
                         <label for="m_${memory.name}_2">2</label>
+                        <input type="checkbox" id="m_${memory.name}_2" name="2" />
                     </div>
-                </div>
             </div>
-            <div class="memory_contract">
-                <div>
-                    Contract <input name="c_${memory.name}" type="number"/> completed:
-                </div>
-                <div>
-                    <div>
-                        <input type="checkbox" id="m_${memory.name}_yes" name="yes" />
-                        <label for="m_${memory.name}_yes">yes</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="m_${memory.name}_no" name="no" />
-                        <label for="m_${memory.name}_no">no</label>
-                    </div>
-                </div>
+            ${memory?.contract ?
+            `<div class="diary__memory-contract">
+            Contract <input name="c_${memory.name}" type="number" /> completed:
+            <div class="diary__memory-cmark">
+                <label for="m_${memory.name}_yes">yes</label>
+                <input type="checkbox" id="m_${memory.name}_yes" name="yes" />
             </div>
+            <div class="diary__memory-cmark">
+                <label for="m_${memory.name}_no">no</label>
+                <input type="checkbox" id="m_${memory.name}_no" name="no" />
+            </div>
+        </div>`: ''
+        }
+        <div class="diary__memory-stickers">
+            ${memory?.stickers?.map(sticker => (
+            `<img width="50" height="50" src="./assets/${sticker}"/>`
+        ))
+        }
+        </div>
     `;
     memoryEl.innerHTML = memoryELContent;
     memoriesEl.append(memoryEl)
