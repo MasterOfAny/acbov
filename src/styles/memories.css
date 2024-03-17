@@ -1,0 +1,54 @@
+.diary__memories {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(13, 1fr);
+    column-gap: 20px;
+    height: fit-content;
+}
+
+.diary__memory {
+    padding: 5px 0;
+    border-bottom: 2px solid var(--color-main-red);
+    position: relative;
+}
+
+.diary__memory-xp input[type=number],
+.diary__memory-contract input[type=number] {
+    border: none;
+    border-bottom: 2px solid #000;
+    margin-left: 5px;
+    max-width: 50px;
+}
+
+.diary__memory-attempts {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.diary__memory-attempt,
+.diary__memory-cmark {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.diary__memory-attempt>label+input,
+.diary__memory-cmark>label+input {
+    margin-left: 3px;
+}
+
+.diary__memory-contract {
+    display: flex;
+    align-items: center;
+}
+
+.diary__memory-stickers {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+}

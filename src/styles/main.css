@@ -1,0 +1,37 @@
+:root {
+    /*colors*/
+    --color-red: #9a483f;
+    --color-main-red: #ff0000;
+    --color-gray: #939392;
+    --color-dark-gray: #767678;
+    --color-light-gray: #d2d9dc;
+    --color-yellow: #e3d59e;
+}
+
+body {
+    background-image: url('../public/assets/bg.webp');
+    background-size: cover;
+}
+
+.diary__grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+}
+
+.diary__xp-block {
+    max-width: 200px
+}
+
+.diary__xp-block-top {
+    height: 40px;
+    background-color: var(--color-red);
+}
+
+.diary__xp-block-bottom {
+    background-color: var(--color-red);
+    color: #FFF;
+    display: flex;
+    position: relative;
+    padding-right: 40px
+}
