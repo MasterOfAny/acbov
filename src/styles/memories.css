@@ -47,8 +47,9 @@
     position: absolute;
     right: 20px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-60%);
     display: grid;
+    gap: 20px;
     grid-auto-flow: column;
     align-items: center;
 }

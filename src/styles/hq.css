@@ -1,0 +1,15 @@
+.diary__hq {
+    display: grid;
+    justify-content: flex-end;
+    padding: 20px;
+    height: 90px;
+    grid-template-columns: repeat(5, 40px);
+    grid-template-rows: 45px 45px;
+    column-gap: 30px;
+    row-gap: 10px;
+}
+
+.diary__hq>.sticker:nth-child(2n+2) {
+    grid-row: 2;
+    margin-left: 35px;
+}
