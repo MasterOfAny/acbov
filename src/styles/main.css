@@ -6,6 +6,7 @@
     --color-dark-gray: #767678;
     --color-light-gray: #d2d9dc;
     --color-yellow: #e3d59e;
+    /*#c2b699*/
 }
 
 body {
@@ -45,9 +46,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     box-shadow: -3px 2px 5px -2px rgba(0, 0, 0, 0.75);
     transition: 0.2s transform;
+    fill: currentColor;
 }
 
 .sticker svg {
@@ -55,10 +56,17 @@ body {
     opacity: 0.4;
 }
 
-.sticker:hover {
+.sticker:not(.auto-sticker):hover {
+    cursor: pointer;
     transform: scale(1.1) rotate(45deg);
     animation: lr 0.8s infinite;
 }
+
+.sticker.earned-sticker svg {
+    color: var(--color-red);
+    opacity: 1;
+}
+
 
 @keyframes lr {
     0% {

@@ -12,12 +12,15 @@
     position: relative;
 }
 
-.diary__memory-xp input[type=number],
-.diary__memory-contract input[type=number] {
+.diary__memory input[type=number] {
     border: none;
     border-bottom: 2px solid #000;
     margin-left: 5px;
     max-width: 50px;
+    background-color: transparent;
+    text-align: center;
+    color: var(--color-main-red);
+    font-weight: 600;
 }
 
 .diary__memory-attempts {
@@ -36,6 +39,63 @@
 .diary__memory-attempt>label+input,
 .diary__memory-cmark>label+input {
     margin-left: 3px;
+    display: block;
+}
+
+.diary__memory input[type=number]::-webkit-outer-spin-button,
+.diary__memory input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.diary__memory input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.diary__memory input[type=checkbox] {
+    display: none;
+}
+
+.diary__memory label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.diary__memory label:hover span,
+.diary__memory label:hover i {
+    color: var(--color-dark-gray);
+    border-color: var(--color-dark-gray)
+}
+
+.diary__memory label span {
+    margin-left: 10px;
+}
+
+.diary__memory label i {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+.diary__memory input[type=checkbox]:checked+label i::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: inset 1em 1em var(--color-main-red);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.diary__memory input[type="checkbox"]:focus {
+    outline: max(2px, 0.15em) solid currentColor;
+    outline-offset: max(2px, 0.15em);
 }
 
 .diary__memory-contract {

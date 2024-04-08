@@ -104,3 +104,20 @@
 .diary__xp-point:nth-child(10n-4) {
     grid-column: 5
 }
+
+.diary__xp-point.current-xp {
+    color: #fff;
+    background-color: var(--color-main-red);
+    font-weight: 600;
+}
+
+.diary__xp-point.current-xp:nth-child(125)::before,
+.diary__xp-point.current-xp:nth-child(25)::before,
+.diary__xp-point.current-xp:nth-child(55)::before,
+.diary__xp-point.current-xp:nth-child(95)::before,
+.diary__xp-point.current-xp:nth-child(125)::after,
+.diary__xp-point.current-xp:nth-child(25)::after,
+.diary__xp-point.current-xp:nth-child(55)::after,
+.diary__xp-point.current-xp:nth-child(95)::after {
+    color: #fff;
+}

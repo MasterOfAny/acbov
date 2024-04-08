@@ -1,11 +1,11 @@
-export const createHQ = () => {
-
-    const $hq = document.querySelector('.diary__hq');
-
+export const createHQ = (el) => {
+    const $hq = el;
     for (let i = 1; i <= 6; i++) {
-        const hqSticker = /*html*/`
+        const hqSticker = `
         <div class="sticker">
-            <img src="/assets/hq_${i}.svg" alt=""/>
+            <svg width="40" height="40">
+                <use xlink:href="/assets/stickers.svg#hq_${i}"></use>
+            </svg>
         </div>
     `;
         $hq.insertAdjacentHTML('beforeend', hqSticker);

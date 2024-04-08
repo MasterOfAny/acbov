@@ -1,11 +1,12 @@
-export const createXPTable = () => {
+export const createXPTable = (el) => {
     let gridRow = 2;
     let step = 5;
-    const $xp = document.querySelector('.diary__xp');
+    const $xp = el;
 
     for (let i = 1; i <= 175; i++) {
         const $xpPoint = document.createElement('div');
         $xpPoint.classList.add('diary__xp-point');
+        $xpPoint.id = `xp${i}`;
         $xpPoint.innerText = i;
         if (i > step + 1 && i < 2 * step + 1) {
             $xpPoint.style.gridRow = `${gridRow}`;
