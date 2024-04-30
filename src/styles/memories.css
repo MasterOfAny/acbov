@@ -16,7 +16,8 @@
     border: none;
     border-bottom: 2px solid #000;
     margin-left: 5px;
-    max-width: 50px;
+    margin-right: 5px;
+    max-width: 40px;
     background-color: transparent;
     text-align: center;
     color: var(--color-main-red);
@@ -34,12 +35,6 @@
     display: flex;
     align-items: center;
     margin-left: 10px;
-}
-
-.diary__memory-attempt>label+input,
-.diary__memory-cmark>label+input {
-    margin-left: 3px;
-    display: block;
 }
 
 .diary__memory input[type=number]::-webkit-outer-spin-button,

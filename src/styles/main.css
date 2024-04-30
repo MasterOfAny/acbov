@@ -14,10 +14,15 @@ body {
     background-size: cover;
 }
 
+.content {
+    padding: 20px;
+}
+
 .diary__grid {
     display: grid;
     grid-template-columns: 200px 1fr;
     gap: 40px;
+    max-width: 90%;
 }
 
 .diary__xp-block {
