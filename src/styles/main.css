@@ -5,8 +5,7 @@
     --color-gray: #939392;
     --color-dark-gray: #767678;
     --color-light-gray: #d2d9dc;
-    --color-yellow: #e3d59e;
-    /*#c2b699*/
+    --color-yellow: #cfc390;
 }
 
 body {
@@ -16,9 +15,12 @@ body {
 
 .content {
     padding: 20px;
+    max-width: 1920px;
+    margin: 0 auto;
 }
 
 .diary__grid {
+    margin-top: 20px;
     display: grid;
     grid-template-columns: 200px 1fr;
     gap: 40px;
@@ -32,6 +34,7 @@ body {
 .diary__xp-block-top {
     height: 40px;
     background-color: var(--color-red);
+    clip-path: polygon(0 100%, 0% 50%, 5% 30%, 18% 30%, 22% 45%, 25% 30%, 76% 30%, 80% 45%, 84% 30%, 96% 30%, 100% 50%, 100% 100%);
 }
 
 .diary__xp-block-bottom {
@@ -75,9 +78,7 @@ body {
 .sticker.auto-sticker.earned-sticker svg,
 .sticker.legendary-sticker.earned-sticker svg {
     color: var(--color-yellow);
-    opacity: 1;
 }
-
 
 @keyframes lr {
     0% {
@@ -90,5 +91,25 @@ body {
 
     100% {
         transform: scale(1.1) rotate(43deg);
+    }
+}
+
+@media(max-width: 1440px) {
+    .diary__grid {
+        max-width: 100%;
+    }
+}
+
+@media(max-width: 1050px) {
+    .diary__xp-block {
+        max-width: 480px;
+    }
+
+    .diary__grid {
+        grid-template-columns: unset;
+    }
+
+    .content {
+        padding: 20px 10px 20px 10px;
     }
 }

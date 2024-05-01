@@ -1,4 +1,11 @@
 .diary__hq {
+    max-width: 70%;
+    margin-top: 20px;
+    margin-left: 240px;
+}
+
+.diary__hq-stickers {
+    margin-top: -40px;
     display: grid;
     justify-content: flex-end;
     padding: 20px;
@@ -9,7 +16,33 @@
     row-gap: 10px;
 }
 
-.diary__hq>.sticker:nth-child(2n+2) {
+.diary__hq-stickers>.sticker:nth-child(2n+2) {
     grid-row: 2;
     margin-left: 35px;
+}
+
+@media(max-width: 1440px) {
+    .diary__hq {
+        max-width: 100%;
+    }
+}
+
+@media(max-width: 1050px) {
+    .diary__hq {
+        margin-left: 0;
+    }
+}
+
+@media(max-width: 640px) {
+    .diary__hq-stickers {
+        margin-top: 0;
+        padding: 0;
+        padding-top: 20px;
+    }
+}
+
+@media(max-width: 360px) {
+    .diary__hq-stickers {
+        transform: scale(0.9);
+    }
 }

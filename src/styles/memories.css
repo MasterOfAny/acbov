@@ -108,3 +108,20 @@
     grid-auto-flow: column;
     align-items: center;
 }
+
+@media(max-width: 830px) {
+    .diary__memories {
+        grid-template-rows: repeat(26, 1fr);
+    }
+}
+
+@media(max-width: 420px) {
+    .diary__memory-stickers {
+        top: 43px;
+        right: -10px;
+    }
+
+    .diary__memory-attempts {
+        margin-top: 15px;
+    }
+}

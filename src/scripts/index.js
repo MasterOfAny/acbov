@@ -1,43 +1,51 @@
-import { createXPTable } from "./create-xp-table";
+import { createXPTable, createMobileXPTable } from "./create-xp-table";
 import { createMemories } from "./create-memories"
 import { createHQ } from "./create-hq";
 
 let lsData = {
     totalXp: 0,
+    hq: [],
     memories: {}
 };
 
-const $xp = document.querySelector('.diary__xp');
+let $xp = document.querySelector('.diary__xp');
 const $memories = document.querySelector('.diary__memories');
-const $hq = document.querySelector('.diary__hq');
+const $hq = document.querySelector('.diary__hq-stickers');
+const $max_xp = document.querySelector('.diary__max-xp');
 
 if (window.localStorage.getItem('acbov_data'))
     lsData = JSON.parse(window.localStorage.getItem('acbov_data'));
 else
     window.localStorage.setItem('acbov_data', JSON.stringify(lsData));
 
-createXPTable($xp);
+let mobile = false;
+
+if (window.innerWidth < 1050) {
+    mobile = true;
+    createMobileXPTable($xp, lsData.totalXp)
+} else {
+    mobile = false;
+    createXPTable($xp);
+}
+
+
 createMemories($memories, lsData);
 createHQ($hq, lsData);
 
 const $stickers = document.querySelectorAll('.sticker:not(.auto-sticker)');
 
-if (lsData.totalXp) {
+if (lsData.totalXp && !mobile) {
     const totalXp = $xp.querySelector(`#xp${lsData.totalXp}`);
     totalXp.classList.add('current-xp');
 }
 
 const saveDataToLs = (type, data) => {
-    let choosedMemory = lsData.memories[data.memory];
-    if (!choosedMemory) {
-        lsData.memories[data.memory] = {
-            xp: 0,
-            stickers: [],
-            attempts: { "1": false, "2": false },
-            contract: { id: '', yes: false, no: false }
-        };
-        choosedMemory = lsData.memories[data.memory];
-    }
+    const choosedMemory = lsData.memories[data.memory] || (lsData.memories[data.memory] = {
+        xp: 0,
+        stickers: [],
+        attempts: { "1": false, "2": false },
+        contract: { id: '', yes: false, no: false }
+    });
     switch (type) {
         case 'memory_xp':
             choosedMemory.xp = data.xp;
@@ -57,6 +65,13 @@ const saveDataToLs = (type, data) => {
                 choosedMemory.stickers.splice(stickerExist, 1);
             else
                 choosedMemory.stickers.push(data.sticker);
+            break;
+        case 'HQ':
+            const stickerHQExist = lsData.hq.indexOf(data);
+            if (stickerHQExist > -1)
+                lsData.hq.splice(stickerHQExist, 1);
+            else
+                lsData.hq.push(data);
             break;
         case 'totalXP':
             lsData.totalXp = data;
@@ -82,17 +97,25 @@ const storeInputValue = (e) => {
 }
 
 const showXpOnTable = (e) => {
-    if (e.target.name.includes('c')) {
-        saveDataToLs('contractId', { "memory": e.target.name.split("_")[1], "id": e.target.value || 0 });
+    if ($max_xp.classList.contains('earned-sticker')) {
+        $max_xp.classList.remove('earned-sticker');
     }
-    else {
-        saveDataToLs('memory_xp', { "memory": e.target.name.split("_")[1], "xp": e.target.value || 0 });
+    const nameParts = e.target.name.split("_");
+    const memory = nameParts[1];
+    const value = e.target.value || 0;
+    if (e.target.name.includes('c')) {
+        saveDataToLs('contractId', { "memory": memory, "id": value });
+    } else {
+        saveDataToLs('memory_xp', { "memory": memory, "xp": value });
         const prevXp = $xp.querySelector('.current-xp');
         if (prevXp) prevXp.classList.remove('current-xp');
-        const targetXp = $xp.querySelector(`#xp${xp}`);
+        const targetXp = $xp.querySelector(`#xp${value}`);
         if (targetXp) {
             targetXp.classList.add('current-xp');
             saveDataToLs('totalXP', Number(targetXp.innerHTML));
+        } else if (lsData.totalXp >= 175) {
+            document.querySelector('#xp175')?.classList.add('current-xp');
+            $max_xp.classList.add('earned-sticker');
         }
     }
 }
@@ -125,10 +148,53 @@ const setAutoSticker = (memorySequence) => {
 const changeStickerState = (e) => {
     e.currentTarget.classList.toggle('earned-sticker');
     const data = e.currentTarget.getAttribute("data-sticker").split(':');
-    setAutoSticker(data[1]);
-    saveDataToLs('sticker', { "memory": data[0], "sticker": data[1] });
+    if (data[0].includes('hq')) {
+        saveDataToLs('HQ', data[0]);
+    } else {
+        setAutoSticker(data[1]);
+        saveDataToLs('sticker', { "memory": data[0], "sticker": data[1] });
+    }
 }
 
+const widthChange = () => {
+    if (window.innerWidth < 1050 && !mobile) {
+        mobile = true;
+        $xp.remove();
+        $xp = document.createElement('div');
+        $xp.classList.add("diary__xp");
+        const target = document.querySelector('.diary__xp-block-top');
+        target.parentNode.insertBefore($xp, target.nextSibling);
+        createMobileXPTable($xp, lsData.totalXp);
+    } else if (window.innerWidth > 1050 && mobile) {
+        mobile = false;
+        //createXPTable($xp);
+    }
+}
+
+let scrollDirection = "down";
+let prevY = 0;
+
+const scrolling = () => {
+    if (window.scrollY > prevY) scrollDirection = "down";
+    else scrollDirection = "up";
+
+    if (scrollDirection === "down" && window.scrollY > 92) {
+        const target = document.querySelector(".diary__xp-block");
+        if (target) {
+            target.classList.add('fixed');
+        }
+    } else {
+        const target = document.querySelector(".diary__xp-block");
+        if (target) {
+            target.classList.remove('fixed');
+        }
+    }
+
+    prevY = window.scrollY
+}
+
+window.addEventListener("resize", widthChange);
+window.addEventListener("scroll", scrolling);
 $memories.addEventListener('click', checkboxDelegate((el) => processCheckboxes(el)));
 $memories.addEventListener('input', inputDelegate((el) => storeInputValue(el)));
 $memories.addEventListener('focusin', inputDelegate((el) => setPrevInputValue(el)));
