@@ -1,6 +1,6 @@
 export const createHQ = (el) => {
     const $hq = el;
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 9; i++) {
         const hqSticker = `
         <div class="sticker">
             <svg width="40" height="40">

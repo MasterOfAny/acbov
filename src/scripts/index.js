@@ -1,6 +1,6 @@
 import { createXPTable } from "./create-xp-table";
 import { createMemories } from "./create-memories"
-import { createHQ } from "./hq";
+import { createHQ } from "./create-hq";
 
 let lsData = {
     totalXp: 0,

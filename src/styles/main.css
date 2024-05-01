@@ -72,6 +72,12 @@ body {
     opacity: 1;
 }
 
+.sticker.auto-sticker.earned-sticker svg,
+.sticker.legendary-sticker.earned-sticker svg {
+    color: var(--color-yellow);
+    opacity: 1;
+}
+
 
 @keyframes lr {
     0% {

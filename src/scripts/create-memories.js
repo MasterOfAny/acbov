@@ -210,7 +210,7 @@ export const createMemories = (el, lsData) => {
             }
         <div class="diary__memory-stickers">
             ${memory?.stickers?.length > 0 ? memory?.stickers?.map(sticker => (
-                `<div class="sticker ${autoStickers.includes(sticker) ? 'auto-sticker' : ''} ${lsData.memories[memory.name]?.stickers?.includes(sticker) ? 'earned-sticker' : ''}" data-sticker="${memory.name}:${sticker}">
+                `<div class="sticker ${sticker === 'st_plus' ? 'legendary-sticker' : ''} ${autoStickers.includes(sticker) ? 'auto-sticker' : ''} ${lsData.memories[memory.name]?.stickers?.includes(sticker) ? 'earned-sticker' : ''}" data-sticker="${memory.name}:${sticker}">
                     <svg width="40" height="40">
                         <use xlink:href="/assets/stickers.svg#${sticker}"></use>
                     </svg>
