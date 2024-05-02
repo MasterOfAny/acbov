@@ -9,7 +9,7 @@
 }
 
 body {
-    background-image: url('../public/assets/bg.webp');
+    background-image: url('/assets/bg.webp');
     background-size: cover;
 }
 

@@ -1,4 +1,4 @@
-import { createXPTable, createMobileXPTable } from "./create-xp-table";
+import { createXPTable, createMobileXPTable, setLevel, nextLevel } from "./create-xp-table";
 import { createMemories } from "./create-memories"
 import { createHQ } from "./create-hq";
 
@@ -28,15 +28,19 @@ if (window.innerWidth < 1050) {
     createXPTable($xp);
 }
 
-
 createMemories($memories, lsData);
 createHQ($hq, lsData);
 
 const $stickers = document.querySelectorAll('.sticker:not(.auto-sticker)');
 
+lsData.totalXp = Object.values(lsData.memories).reduce((acc, memory) => acc + Number(memory.xp), 0);
+
 if (lsData.totalXp && !mobile) {
     const totalXp = $xp.querySelector(`#xp${lsData.totalXp}`);
     totalXp.classList.add('current-xp');
+} else {
+    const $m_xp = document.querySelector('#m-xp-value');
+    if ($m_xp) $m_xp.innerHTML = lsData.totalXp;
 }
 
 const saveDataToLs = (type, data) => {
@@ -79,44 +83,30 @@ const saveDataToLs = (type, data) => {
         default:
             break;
     }
+    lsData.totalXp = Object.values(lsData.memories).reduce((acc, memory) => acc + Number(memory.xp), 0);
+    updateStats()
     window.localStorage.setItem('acbov_data', JSON.stringify(lsData));
 }
 
-let xp = lsData.totalXp;
-
-const setPrevInputValue = (e) => {
-    e.target.dataset.prevValue = e.target.value || 0;
-}
-
-const storeInputValue = (e) => {
-    if (e.target.name.includes('c')) return;
-    const inputValue = e.target.value || 0;
-    let previousValue = e.target.getAttribute("data-prev-value") || 0;
-    if (previousValue !== inputValue) xp += inputValue - previousValue;
-    e.target.dataset.prevValue = inputValue;
-}
-
-const showXpOnTable = (e) => {
-    if ($max_xp.classList.contains('earned-sticker')) {
-        $max_xp.classList.remove('earned-sticker');
-    }
+const processInputs = (e) => {
     const nameParts = e.target.name.split("_");
     const memory = nameParts[1];
     const value = e.target.value || 0;
-    if (e.target.name.includes('c')) {
-        saveDataToLs('contractId', { "memory": memory, "id": value });
-    } else {
-        saveDataToLs('memory_xp', { "memory": memory, "xp": value });
-        const prevXp = $xp.querySelector('.current-xp');
-        if (prevXp) prevXp.classList.remove('current-xp');
-        const targetXp = $xp.querySelector(`#xp${value}`);
-        if (targetXp) {
-            targetXp.classList.add('current-xp');
-            saveDataToLs('totalXP', Number(targetXp.innerHTML));
-        } else if (lsData.totalXp >= 175) {
-            document.querySelector('#xp175')?.classList.add('current-xp');
-            $max_xp.classList.add('earned-sticker');
-        }
+    if (e.target.name.includes('c')) saveDataToLs('contractId', { "memory": memory, "id": value });
+    else saveDataToLs('memory_xp', { "memory": memory, "xp": value });
+}
+const updateStats = () => {
+    const hasEarnedSticker = lsData.totalXp >= 175;
+    $max_xp.classList.toggle('earned-sticker', hasEarnedSticker);
+    const prevXp = $xp.querySelector('.current-xp');
+    prevXp?.classList.remove('current-xp');
+    const targetXpId = hasEarnedSticker ? '#xp175' : `#xp${lsData.totalXp}`;
+    const targetXp = $xp.querySelector(targetXpId);
+    targetXp?.classList.add('current-xp');
+    if (mobile) {
+        document.getElementById('m-xp-value').textContent = lsData.totalXp;
+        document.getElementById('m-current-lvl').textContent = setLevel(lsData.totalXp);
+        document.getElementById('m-next-level').textContent = nextLevel(lsData.totalXp);
     }
 }
 
@@ -177,7 +167,6 @@ let prevY = 0;
 const scrolling = () => {
     if (window.scrollY > prevY) scrollDirection = "down";
     else scrollDirection = "up";
-
     if (scrollDirection === "down" && window.scrollY > 92) {
         const target = document.querySelector(".diary__xp-block");
         if (target) {
@@ -189,15 +178,12 @@ const scrolling = () => {
             target.classList.remove('fixed');
         }
     }
-
-    prevY = window.scrollY
+    prevY = window.scrollY;
 }
 
 window.addEventListener("resize", widthChange);
 window.addEventListener("scroll", scrolling);
 $memories.addEventListener('click', checkboxDelegate((el) => processCheckboxes(el)));
-$memories.addEventListener('input', inputDelegate((el) => storeInputValue(el)));
-$memories.addEventListener('focusin', inputDelegate((el) => setPrevInputValue(el)));
-$memories.addEventListener('focusout', inputDelegate((el) => showXpOnTable(el)));
+$memories.addEventListener('focusout', inputDelegate((el) => processInputs(el)));
 $stickers?.forEach((sticker => sticker.addEventListener('click', (e) => changeStickerState(e))));
 
