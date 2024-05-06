@@ -64,12 +64,6 @@ body {
     opacity: 0.4;
 }
 
-.sticker:not(.auto-sticker):hover {
-    cursor: pointer;
-    transform: scale(1.1) rotate(45deg);
-    animation: lr 0.8s infinite;
-}
-
 .sticker.earned-sticker svg {
     color: var(--color-red);
     opacity: 1;
@@ -91,6 +85,14 @@ body {
 
     100% {
         transform: scale(1.1) rotate(43deg);
+    }
+}
+
+@media(hover:hover) {
+    .sticker:not(.auto-sticker):hover {
+        cursor: pointer;
+        transform: scale(1.1) rotate(45deg);
+        animation: lr 0.8s infinite;
     }
 }
 

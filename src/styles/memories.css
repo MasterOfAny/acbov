@@ -57,12 +57,6 @@
     cursor: pointer;
 }
 
-.diary__memory label:hover span,
-.diary__memory label:hover i {
-    color: var(--color-dark-gray);
-    border-color: var(--color-dark-gray)
-}
-
 .diary__memory label span {
     margin-left: 10px;
 }
@@ -107,6 +101,15 @@
     gap: 20px;
     grid-auto-flow: column;
     align-items: center;
+}
+
+@media(hover:hover) {
+
+    .diary__memory label:hover span,
+    .diary__memory label:hover i {
+        color: var(--color-dark-gray);
+        border-color: var(--color-dark-gray)
+    }
 }
 
 @media(max-width: 830px) {
