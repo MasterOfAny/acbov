@@ -1,5 +1,6 @@
 const capmaignXp = 67;
 const hqKey = 'rhq';
+const levels = { "3": 22, "4": 50 }
 const romaMemoriesData = [
     {
         name: 'R1.1',
@@ -55,4 +56,4 @@ const romaMemoriesData = [
     },
 ];
 
-export { capmaignXp, romaMemoriesData, hqKey }
+export { capmaignXp, romaMemoriesData, hqKey, levels }

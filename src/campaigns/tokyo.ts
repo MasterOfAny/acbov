@@ -1,5 +1,6 @@
 const capmaignXp = 60;
-const hqKey = 'thq';
+const hqKey = '';
+const levels = { "3": 20, "4": 32 }
 const tokyoMemoriesData = [
     {
         name: 'T1.1',
@@ -54,4 +55,4 @@ const tokyoMemoriesData = [
     },
 ]
 
-export { capmaignXp, tokyoMemoriesData, hqKey }
+export { capmaignXp, tokyoMemoriesData, hqKey, levels }
