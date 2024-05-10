@@ -1,6 +1,7 @@
 import { createXPTable, createMobileXPTable, setLevel, nextLevel } from "./create-xp-table";
 import { createMemories } from "./create-memories"
 import { createHQ } from "./create-hq";
+import { importCampaign, changeCampaign } from "./change-campaign";
 
 let lsData = {
     totalXp: 0,
@@ -12,24 +13,29 @@ let $xp = document.querySelector('.diary__xp');
 const $memories = document.querySelector('.diary__memories');
 const $hq = document.querySelector('.diary__hq-stickers');
 const $max_xp = document.querySelector('.diary__max-xp');
+const $campaigns = document.querySelector('.diary__campaigns');
 
-if (window.localStorage.getItem('acbov_data'))
-    lsData = JSON.parse(window.localStorage.getItem('acbov_data'));
-else
-    window.localStorage.setItem('acbov_data', JSON.stringify(lsData));
+if (window.localStorage.getItem('acbov_data')) lsData = JSON.parse(window.localStorage.getItem('acbov_data'));
+else window.localStorage.setItem('acbov_data', JSON.stringify(lsData));
+
+const campaign = window.localStorage.getItem('acbov_campaign');
+if (!campaign) window.localStorage.setItem('acbov_campaign', "core");
+
+const module = await importCampaign(campaign || 'core');
+$campaigns.querySelector(`#${campaign}`).checked = true;
 
 let mobile = false;
 
 if (window.innerWidth < 1050) {
     mobile = true;
-    createMobileXPTable($xp, lsData.totalXp)
+    createMobileXPTable($xp, lsData.totalXp, module.levels)
 } else {
     mobile = false;
-    createXPTable($xp);
+    createXPTable($xp, module.campaignXp, module.levels);
 }
 
-createMemories($memories, lsData);
-createHQ($hq, lsData);
+createMemories($memories, lsData, module.memoriesData);
+createHQ($hq, lsData, module.hqKey);
 
 const $stickers = document.querySelectorAll('.sticker:not(.auto-sticker)');
 
@@ -105,9 +111,20 @@ const updateStats = () => {
     targetXp?.classList.add('current-xp');
     if (mobile) {
         document.getElementById('m-xp-value').textContent = lsData.totalXp;
-        document.getElementById('m-current-lvl').textContent = setLevel(lsData.totalXp);
-        document.getElementById('m-next-level').textContent = nextLevel(lsData.totalXp);
+        document.getElementById('m-current-lvl').textContent = setLevel(lsData.totalXp, module.levels);
+        document.getElementById('m-next-level').textContent = nextLevel(lsData.totalXp, module.levels);
     }
+}
+
+const processRadio = (e) => {
+    lsData = {
+        totalXp: 0,
+        hq: [],
+        memories: {}
+    };
+    window.localStorage.setItem('acbov_data', JSON.stringify(lsData));
+    window.localStorage.setItem('acbov_campaign', e.target.value);
+    changeCampaign($xp, $memories, $hq, e.target.value, lsData);
 }
 
 const processCheckboxes = (e) => {
@@ -123,6 +140,7 @@ const processCheckboxes = (e) => {
 const delegate = (selector) => (cb) => (e) => e.target.matches(selector) && cb(e);
 const inputDelegate = delegate('.diary__memory input[type=number]');
 const checkboxDelegate = delegate('.diary__memory input[type=checkbox]');
+const radioDelegate = delegate('.diary__campaigns input[type=radio]');
 
 const setAutoSticker = (memorySequence) => {
     const split = memorySequence.split('_');
@@ -149,15 +167,16 @@ const changeStickerState = (e) => {
 const widthChange = () => {
     if (window.innerWidth < 1050 && !mobile) {
         mobile = true;
-        $xp.remove();
-        $xp = document.createElement('div');
-        $xp.classList.add("diary__xp");
-        const target = document.querySelector('.diary__xp-block-top');
-        target.parentNode.insertBefore($xp, target.nextSibling);
-        createMobileXPTable($xp, lsData.totalXp);
+        $xp.innerHTML = '';
+        createMobileXPTable($xp, lsData.totalXp, module.levels);
     } else if (window.innerWidth > 1050 && mobile) {
         mobile = false;
-        //createXPTable($xp);
+        $xp.innerHTML = '';
+        createXPTable($xp, module.campaignXp, module.levels);
+        if (lsData.totalXp) {
+            const totalXp = $xp.querySelector(`#xp${lsData.totalXp}`);
+            totalXp.classList.add('current-xp');
+        }
     }
 }
 
@@ -165,18 +184,15 @@ let scrollDirection = "down";
 let prevY = 0;
 
 const scrolling = () => {
+    if (!mobile) return
     if (window.scrollY > prevY) scrollDirection = "down";
     else scrollDirection = "up";
     if (scrollDirection === "down" && window.scrollY > 92) {
         const target = document.querySelector(".diary__xp-block");
-        if (target) {
-            target.classList.add('fixed');
-        }
+        if (target) target.classList.add('fixed');
     } else {
         const target = document.querySelector(".diary__xp-block");
-        if (target) {
-            target.classList.remove('fixed');
-        }
+        if (target) target.classList.remove('fixed');
     }
     prevY = window.scrollY;
 }
@@ -184,6 +200,7 @@ const scrolling = () => {
 window.addEventListener("resize", widthChange);
 window.addEventListener("scroll", scrolling);
 $memories.addEventListener('click', checkboxDelegate((el) => processCheckboxes(el)));
+$campaigns.addEventListener('click', radioDelegate((el) => processRadio(el)));
 $memories.addEventListener('focusout', inputDelegate((el) => processInputs(el)));
 $stickers?.forEach((sticker => sticker.addEventListener('click', (e) => changeStickerState(e))));
 

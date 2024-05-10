@@ -55,7 +55,6 @@
 .diary__xp-point:nth-child(10n) {
     position: relative;
     color: #fff;
-    grid-column: 1;
 }
 
 .diary__xp-point:nth-child(10n)::after {
@@ -71,19 +70,11 @@
     border-top: 10px solid #fff
 }
 
-.diary__xp-point:nth-child(125),
-.diary__xp-point:nth-child(25),
-.diary__xp-point:nth-child(55),
-.diary__xp-point:nth-child(95) {
+.diary__xp-point.diary__xp-level {
     background-color: #fff;
-    font-size: 0
 }
 
-.diary__xp-point:nth-child(125)::before,
-.diary__xp-point:nth-child(25)::before,
-.diary__xp-point:nth-child(55)::before,
-.diary__xp-point:nth-child(95)::before {
-    content: 'LVL';
+.diary__xp-point.diary__xp-level>span:first-child {
     writing-mode: tb-rl;
     transform: rotate(-180deg);
     color: var(--color-main-red);
@@ -91,29 +82,10 @@
     font-weight: 600
 }
 
-.diary__xp-point:nth-child(125)::after,
-.diary__xp-point:nth-child(25)::after,
-.diary__xp-point:nth-child(55)::after,
-.diary__xp-point:nth-child(95)::after {
+.diary__xp-point.diary__xp-level>span:last-child {
     color: var(--color-main-red);
     font-size: 16px;
     font-weight: 600
-}
-
-.diary__xp-point:nth-child(25)::after {
-    content: 'I';
-}
-
-.diary__xp-point:nth-child(55)::after {
-    content: 'II';
-}
-
-.diary__xp-point:nth-child(95)::after {
-    content: 'III';
-}
-
-.diary__xp-point:nth-child(125)::after {
-    content: 'IV';
 }
 
 .diary__xp-point:nth-child(175) {
@@ -142,17 +114,6 @@
     color: #fff;
     background-color: var(--color-main-red);
     font-weight: 600;
-}
-
-.diary__xp-point.current-xp:nth-child(125)::before,
-.diary__xp-point.current-xp:nth-child(25)::before,
-.diary__xp-point.current-xp:nth-child(55)::before,
-.diary__xp-point.current-xp:nth-child(95)::before,
-.diary__xp-point.current-xp:nth-child(125)::after,
-.diary__xp-point.current-xp:nth-child(25)::after,
-.diary__xp-point.current-xp:nth-child(55)::after,
-.diary__xp-point.current-xp:nth-child(95)::after {
-    color: #fff;
 }
 
 @media(max-width: 1050px) {

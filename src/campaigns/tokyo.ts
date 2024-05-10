@@ -1,7 +1,7 @@
-const capmaignXp = 60;
+const campaignXp = 60;
 const hqKey = '';
-const levels = { "3": 20, "4": 32 }
-const tokyoMemoriesData = [
+const levels = { "20": 3, "32": 4 }
+const memoriesData = [
     {
         name: 'T1.1',
         stickers: [
@@ -55,4 +55,4 @@ const tokyoMemoriesData = [
     },
 ]
 
-export { capmaignXp, tokyoMemoriesData, hqKey, levels }
+export { campaignXp, memoriesData, hqKey, levels }

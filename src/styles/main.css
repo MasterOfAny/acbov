@@ -74,6 +74,31 @@ body {
     color: var(--color-yellow);
 }
 
+.diary__campaigns {
+    display: flex;
+    gap: 10px
+}
+
+.diary__campaigns input {
+    display: none;
+}
+
+.diary__campaigns label {
+    padding: 5px 15px;
+    display: flex;
+    border: 1px solid var(--color-dark-gray);
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.diary__campaigns input:checked+label {
+    background-color: var(--color-red);
+    border-color: var(--color-red);
+    color: #fff
+}
+
 @keyframes lr {
     0% {
         transform: scale(1.1) rotate(43deg);
@@ -93,6 +118,11 @@ body {
         cursor: pointer;
         transform: scale(1.1) rotate(45deg);
         animation: lr 0.8s infinite;
+    }
+
+    .diary__campaigns label:hover {
+        color: var(--color-red);
+        border-color: var(--color-red)
     }
 }
 

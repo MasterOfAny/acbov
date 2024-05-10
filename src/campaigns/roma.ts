@@ -1,7 +1,7 @@
-const capmaignXp = 67;
+const campaignXp = 67;
 const hqKey = 'rhq';
-const levels = { "3": 22, "4": 50 }
-const romaMemoriesData = [
+const levels = { "22": 3, "50": 4 };
+const memoriesData = [
     {
         name: 'R1.1',
         stickers: [
@@ -56,4 +56,4 @@ const romaMemoriesData = [
     },
 ];
 
-export { capmaignXp, romaMemoriesData, hqKey, levels }
+export { campaignXp, memoriesData, hqKey, levels }

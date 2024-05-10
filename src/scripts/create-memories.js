@@ -1,9 +1,5 @@
-import { coreMemoriesData } from "../campaigns/core";
-
-export const createMemories = (el, lsData) => {
-    const $memories = el;
-    const autoStickers = ['st_0', 'st_1', 'st_2', 'st_3', 'st_4'];
-    for (let [index, memory] of coreMemoriesData.entries()) {
+export const createMemories = (el, lsData, memoriesData) => {
+    for (let [index, memory] of memoriesData.entries()) {
         const $memory = document.createElement('div');
         $memory.classList.add('diary__memory');
         const memoryContent = `
@@ -47,7 +43,7 @@ export const createMemories = (el, lsData) => {
             }
         <div class="diary__memory-stickers">
             ${memory?.stickers?.length > 0 ? memory?.stickers?.map(sticker => (
-                `<div class="sticker ${sticker === 'st_plus' ? 'legendary-sticker' : ''} ${autoStickers.includes(sticker) ? 'auto-sticker' : ''} ${lsData.memories[memory.name]?.stickers?.includes(sticker) ? 'earned-sticker' : ''}" data-sticker="${memory.name}:${sticker}">
+                `<div class="sticker ${sticker === 'st_plus' ? 'legendary-sticker' : ''} ${!sticker.includes('plus') && sticker.split('_').length - 1 === 1 ? 'auto-sticker' : ''} ${lsData.memories[memory.name]?.stickers?.includes(sticker) ? 'earned-sticker' : ''}" data-sticker="${memory.name}:${sticker}">
                     <svg width="40" height="40">
                         <use xlink:href="/assets/stickers.svg#${sticker}"></use>
                     </svg>
@@ -57,6 +53,6 @@ export const createMemories = (el, lsData) => {
         </div>
     `;
         $memory.insertAdjacentHTML('afterbegin', memoryContent);
-        $memories.append($memory);
+        el.append($memory);
     }
 }
