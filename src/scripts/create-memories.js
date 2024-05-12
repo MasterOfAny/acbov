@@ -1,4 +1,4 @@
-export const createMemories = (el, lsData, memoriesData) => {
+export const createMemories = (el, lsData, memoriesData, campaign) => {
     for (let [index, memory] of memoriesData.entries()) {
         const $memory = document.createElement('div');
         $memory.classList.add('diary__memory');
@@ -45,7 +45,7 @@ export const createMemories = (el, lsData, memoriesData) => {
             ${memory?.stickers?.length > 0 ? memory?.stickers?.map(sticker => (
                 `<div class="sticker ${sticker === 'st_plus' ? 'legendary-sticker' : ''} ${!sticker.includes('plus') && sticker.split('_').length - 1 === 1 ? 'auto-sticker' : ''} ${lsData.memories[memory.name]?.stickers?.includes(sticker) ? 'earned-sticker' : ''}" data-sticker="${memory.name}:${sticker}">
                     <svg width="40" height="40">
-                        <use xlink:href="/assets/stickers.svg#${sticker}"></use>
+                        <use xlink:href="/assets/stickers_${campaign}.svg#${sticker}"></use>
                     </svg>
                 </div>`
             )).join("") : ''

@@ -12,8 +12,8 @@ const changeCampaign = async (xpEl, memoriesEl, hqEl, campaign, lsData) => {
     const module = await importCampaign(campaign);
     if (window.innerWidth > 1050) createXPTable(xpEl, module.campaignXp, module.levels);
     else createMobileXPTable(xpEl, module.campaignXp, module.levels);
-    createMemories(memoriesEl, lsData, module.memoriesData);
-    createHQ(hqEl, lsData, module.hqKey);
+    createMemories(memoriesEl, lsData, module.memoriesData, campaign);
+    createHQ(hqEl, lsData, module.hqKey, campaign);
 }
 
 export { importCampaign, changeCampaign }

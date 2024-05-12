@@ -36,8 +36,8 @@ const memoriesData = [
     {
         name: 'R2.2',
         stickers: [
-            'r_2_1',
-            'r_2_2'
+            'r_2_2_1',
+            'r_2_2_2'
         ]
     },
     {

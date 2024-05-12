@@ -34,8 +34,8 @@ if (window.innerWidth < 1050) {
     createXPTable($xp, module.campaignXp, module.levels);
 }
 
-createMemories($memories, lsData, module.memoriesData);
-createHQ($hq, lsData, module.hqKey);
+createMemories($memories, lsData, module.memoriesData, campaign);
+createHQ($hq, lsData, module.hqKey, campaign);
 
 const $stickers = document.querySelectorAll('.sticker:not(.auto-sticker)');
 
