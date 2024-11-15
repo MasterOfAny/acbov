@@ -9,22 +9,43 @@ let lsData = {
     memories: {}
 };
 
-let $xp = document.querySelector('.diary__xp');
-const $memories = document.querySelector('.diary__memories');
-const $hq = document.querySelector('.diary__hq-stickers');
-const $max_xp = document.querySelector('.diary__max-xp');
-const $campaigns = document.querySelector('.diary__campaigns');
-
 if (window.localStorage.getItem('acbov_data')) lsData = JSON.parse(window.localStorage.getItem('acbov_data'));
 else window.localStorage.setItem('acbov_data', JSON.stringify(lsData));
 
-const campaign = window.localStorage.getItem('acbov_campaign');
+const campaign = window.localStorage.getItem('acbov_campaign') || 'core';
 if (!campaign) window.localStorage.setItem('acbov_campaign', "core");
 
 const module = await importCampaign(campaign || 'core');
-$campaigns.querySelector(`#${campaign}`).checked = true;
+
+let $xp;
+let $memories;
+let $hq;
+let $max_xp;
+let $campaigns;
+
+const setDOMElements = () => {
+    $xp = document.querySelector('.diary__xp');
+    $memories = document.querySelector('.diary__memories');
+    $hq = document.querySelector('.diary__hq-stickers');
+    $max_xp = document.querySelector('.diary__max-xp');
+    $campaigns = document.querySelector('.diary__campaigns');
+}
+setDOMElements();
 
 let mobile = false;
+
+const memoryRows = {
+    'core': [13, 26],
+    'roma': [8, 8],
+    'tokyo': [8, 8]
+}
+const setMemoryRows = () => {
+    const campaign = window.localStorage.getItem('acbov_campaign') || 'core';
+    $memories.style.setProperty('--rows', !mobile ? memoryRows[campaign][0] : memoryRows[campaign][1]);
+}
+setMemoryRows();
+
+$campaigns.querySelector(`#${campaign}`).checked = true;
 
 if (window.innerWidth < 1050) {
     mobile = true;
@@ -37,7 +58,7 @@ if (window.innerWidth < 1050) {
 createMemories($memories, lsData, module.memoriesData, campaign);
 createHQ($hq, lsData, module.hqKey, campaign);
 
-const $stickers = document.querySelectorAll('.sticker:not(.auto-sticker)');
+let $stickers = document.querySelectorAll('.sticker:not(.auto-sticker)');
 
 lsData.totalXp = Object.values(lsData.memories).reduce((acc, memory) => acc + Number(memory.xp), 0);
 
@@ -116,7 +137,7 @@ const updateStats = () => {
     }
 }
 
-const processRadio = (e) => {
+const processRadio = async (e) => {
     lsData = {
         totalXp: 0,
         hq: [],
@@ -124,7 +145,12 @@ const processRadio = (e) => {
     };
     window.localStorage.setItem('acbov_data', JSON.stringify(lsData));
     window.localStorage.setItem('acbov_campaign', e.target.value);
-    changeCampaign($xp, $memories, $hq, e.target.value, lsData);
+    clearMemoryListeners();
+    await changeCampaign($xp, $memories, $hq, e.target.value, lsData);
+    setDOMElements();
+    setMemoryRows();
+    $stickers = document.querySelectorAll('.sticker:not(.auto-sticker)');
+    setMemoryListeners();
 }
 
 const processCheckboxes = (e) => {
@@ -178,6 +204,7 @@ const widthChange = () => {
             totalXp.classList.add('current-xp');
         }
     }
+    setMemoryRows();
 }
 
 let scrollDirection = "down";
@@ -196,11 +223,17 @@ const scrolling = () => {
     }
     prevY = window.scrollY;
 }
-
+const setMemoryListeners = () => {
+    $memories.addEventListener('click', checkboxDelegate((el) => processCheckboxes(el)));
+    $memories.addEventListener('focusout', inputDelegate((el) => processInputs(el)));
+    $stickers?.forEach((sticker => sticker.addEventListener('click', (e) => changeStickerState(e))));
+}
+const clearMemoryListeners = () => {
+    $memories.removeEventListener('click', checkboxDelegate((el) => processCheckboxes(el)));
+    $memories.removeEventListener('focusout', inputDelegate((el) => processInputs(el)));
+    $stickers?.forEach((sticker => sticker.removeEventListener('click', (e) => changeStickerState(e))));
+}
 window.addEventListener("resize", widthChange);
 window.addEventListener("scroll", scrolling);
-$memories.addEventListener('click', checkboxDelegate((el) => processCheckboxes(el)));
 $campaigns.addEventListener('click', radioDelegate((el) => processRadio(el)));
-$memories.addEventListener('focusout', inputDelegate((el) => processInputs(el)));
-$stickers?.forEach((sticker => sticker.addEventListener('click', (e) => changeStickerState(e))));
-
+setMemoryListeners();

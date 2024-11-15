@@ -1,7 +1,7 @@
 .diary__memories {
     display: grid;
     grid-auto-flow: column;
-    grid-template-rows: repeat(13, 1fr);
+    grid-template-rows: repeat(var(--rows), 1fr);
     column-gap: 20px;
     height: fit-content;
 }
@@ -114,7 +114,7 @@
 
 @media(max-width: 830px) {
     .diary__memories {
-        grid-template-rows: repeat(26, 1fr);
+        grid-template-rows: repeat(var(--rows), 1fr);
     }
 }
 
