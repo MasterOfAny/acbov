@@ -2,7 +2,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "путь/к/вашему/index.html"
+        "dest": "src/index.html"
       }
     ]
   }
